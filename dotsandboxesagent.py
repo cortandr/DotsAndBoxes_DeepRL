@@ -67,7 +67,7 @@ class DotsAndBoxesAgent:
 
         # Initialize network and load model
         self.RL_agent = DQN(self.nb_cols, False)
-        self.RL_agent.load_model("./saved_model4x4.FINAL/model")
+        self.RL_agent.load_model("./models/saved_model4x4.FINAL/model")
 
     def add_player(self, player):
         """Use the same agent for multiple players."""
