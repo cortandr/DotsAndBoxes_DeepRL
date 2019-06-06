@@ -119,13 +119,3 @@ When the game ends after an action, the message is slightly altered:
 The `type` field becomes `end` and a new field `winner` is set to the player
 that has won the game.
 
-
-Contact information
--------------------
-
-- Wannes Meert,        https://people.cs.kuleuven.be/wannes.meert
-- Hendrik Blockeel,    https://people.cs.kuleuven.be/hendrik.blockeel
-- Arne De Brabandere,  https://people.cs.kuleuven.be/arne.debrabandere
-- Sebastijan Dumančić, https://people.cs.kuleuven.be/sebastijan.dumancic
-- Pieter Robberechts,  https://people.cs.kuleuven.be/pieter.robberechts
-
