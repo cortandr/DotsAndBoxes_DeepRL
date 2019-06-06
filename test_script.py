@@ -3,7 +3,7 @@ import copy
 from naive_agent import NaiveAgent
 from DQN import DQN
 from randomAgent import RandomAgent
-import matplotlib.pyplot as plt
+
 
 class Test:
 
@@ -332,6 +332,7 @@ class Test:
         self.state = self.initState(shape)
         self.gameEnded = False
         self.completeBoxes = self.initCompleteBoxes(shape)
+
 
 path3x3 = "./saved_model3x3.FINAL"
 path4x4 = "./saved_model4x4.FINAL"

@@ -7,6 +7,7 @@ class RandomAgent:
         self.state = state
 
     def action(self,state, boxes):
+
         # Random move
         free_lines = []
         for ri in range(len(state)):
@@ -17,9 +18,12 @@ class RandomAgent:
                     free_lines.append((ri, ci, "v"))
                 if ci < (len(row) - 1) and cell["h"] == 0:
                     free_lines.append((ri, ci, "h"))
+
         if len(free_lines) == 0:
             # Board full
             return None
-        movei = random.randint(0, len(free_lines) - 1)
-        r, c, o = free_lines[movei]
+
+        move = random.randint(0, len(free_lines) - 1)
+        r, c, o = free_lines[move]
+
         return r, c, o

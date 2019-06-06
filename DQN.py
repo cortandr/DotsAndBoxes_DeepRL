@@ -3,6 +3,7 @@ import tensorflow as tf
 import random
 import copy
 
+
 class DQN:
     """DQN agent class"""
 
@@ -25,27 +26,42 @@ class DQN:
         self.train_op = None
         self.next_state = None
         self.sess = None
-        # Build the network architecture
+
+        # Build network
         self.build_network()
 
     def predict(self,feature_vector):
+
+        """
+        Prediction method used to predict best action given the current state
+        :param feature_vector: current state
+        :return:
+        """
+
         # Generate all allowed moves from state
         actions = self.generateMoves(feature_vector)
         pairs = []
+
         # Compute all the Q values for those actions
         for a in actions:
+
             f = copy.deepcopy(feature_vector)
-            i, j, d = a
             next_f = copy.deepcopy(feature_vector)
+
+            # Unpack current action
+            i, j, d = a
+
+            # Map action to int in array
             if d == 'h':
                 next_f[i][j][0] = 1
             else:
                 next_f[i][j][1] = 1
+
+            # Prepare input tensor and run model
             f = np.append(f, next_f, axis=2)
             f = np.reshape(f, (1, self.input_shape+1, self.input_shape+1, 4))
             q = self.sess.run(self.Q_values, feed_dict={self.input_layer: f})
             pairs.append((a, q))
-
 
         # Roll the dice:
         # Take random move or choose best Q-value and associated action
@@ -66,10 +82,15 @@ class DQN:
 
     def build_network(self):
 
-        """----------------- Training Network -----------------"""
+        """
+        Builds network and initializes all tensorflow related variables
+        :return:
+        """
+
         g = tf.Graph()
         with g.as_default():
-            # Input Layer
+
+            # Input and Target Layers
             self.input_layer = tf.placeholder(tf.float32, [None, None, None, 4])
             self.target_Q = tf.placeholder(tf.float32, (1,1))
 
@@ -109,7 +130,7 @@ class DQN:
             normalized_avPool_output = tf.layers.batch_normalization(avPool_output,
                                                                      axis=1)
 
-            # Fully connected NN
+            # FCN
 
             # First layer
             fc_1 = tf.layers.dense(inputs=normalized_avPool_output,
@@ -145,8 +166,13 @@ class DQN:
             self.sess = tf.Session()
             self.sess.run(init)
 
+    def generateMoves(self, feature_vector):
 
-    def generateMoves(self,feature_vector):
+        """
+        Method used to generate all allowed moves given the current state
+        :param feature_vector: current state represented as a matrix
+        :return: list of tuple with coordinates of allowed moves
+        """
         moves = []
         for i in range(len(feature_vector)):
             for j in range(len(feature_vector)):
@@ -158,8 +184,20 @@ class DQN:
                     moves.append((i, j, 'h'))
 
     def save_model(self, path):
+
+        """
+        Save model
+        :param path: path to weights file
+        :return: path to saved model
+        """
         p = self.saver.save(self.sess, (path + "/model"))
         return p
 
     def load_model(self, path):
+
+        """
+        Load model
+        :param path: path to restore the model from
+        :return:
+        """
         self.saver.restore(self.sess, path)
